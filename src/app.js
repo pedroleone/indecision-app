@@ -6,49 +6,40 @@ const app = {
     options: ['Array Item one', 'Array Item two', 'Array item three']
 }
 
-// JSX - Javascript XML
-const template = (
-    <div>
-        <h1>{app.title}</h1>
-        {app.subtitle && <p>{app.subtitle}</p>}
-        {app.options.length>0 ? <p>Here are your Options</p> : <p>No options</p>}
-        {app.options.length>0 && <ol>{app.options.map((value,index)=>{return <li key={index}>{value}</li>})}</ol>}
-    </div>
-);
-
-let count = 0;
-const addOne = () => {
-    count++;
-    console.log('addOne');
-    renderCounterApp();
-}
-const minusOne = () => {
-    count--;
-    console.log('minusOne');
-    renderCounterApp();
-}
-const reset = () => {
-    count = 0;
-    console.log('resetCount');
-    renderCounterApp();
+const onFormSubmit = (e) => {
+    e.preventDefault(); // impede que a submissão do form atualize a página
+    const option = e.target.elements.option.value; // obtem o valor do form onde name="option" 
+    if (option) {
+        app.options.push(option);
+        e.target.elements.option.value = "";
+        renderPage();
+    }
 }
 
+const onRemoveAll = () => {
+    app.options = [];
+    renderPage();
 
+}
 
-
-const approot = document.getElementById("app");
-
-
-const renderCounterApp = () => {
-    const templateTwo = (
+const renderPage = () => {
+    const approot = document.getElementById("app");
+    const template = (
         <div>
-            <h1>Count : {count}</h1>
-            <button onClick={addOne}>+1</button>
-            <button onClick={minusOne}>-1</button>
-            <button onClick={reset}>Reset</button>
+            <h1>{app.title}</h1>
+            {app.subtitle && <p>{app.subtitle}</p>}
+            {app.options.length>0 && <p><button id="clear" onClick={onRemoveAll}>Remove All</button></p>}
+            {app.options.length>0 ? <p>Here are your Options</p> : <p>No options</p>}
+            {app.options.length>0 && <ol>{app.options.map((value,index)=>{return <li key={index}>{value}</li>})}</ol>}
+            <form onSubmit={onFormSubmit}>
+                <input type="text" name="option"/>
+                <button>Add Option</button>
+            </form>
         </div>
-    )
-    ReactDOM.render(templateTwo, approot);
+    );
+    ReactDOM.render(template,approot);
 }
 
-renderCounterApp();
+renderPage();
+
+
