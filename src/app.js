@@ -44,7 +44,7 @@ const renderPage = () => {
             <h1>{app.title}</h1>
             {app.subtitle && <p>{app.subtitle}</p>}
             <button onClick={onMakeDecision} disabled={app.options.length<=0}>What should I do?</button>
-            {app.options.length>0 && <p><button id="clear" onClick={onRemoveAll}>Remove All</button></p>}
+            <button id="clear" onClick={onRemoveAll} disabled={app.options.length<=0}>Remove All</button>
             {app.options.length>0 ? <p>Here are your Options</p> : <p>No options</p>}
             {/* app.options.length>0 && <ol>{app.options.map(renderValue)}</ol> */}  {/* using a function */}
             {app.options.length>0 && <ol>{app.options.map((value, index) => {
